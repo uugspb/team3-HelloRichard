@@ -303,13 +303,6 @@ public class VRCamera : MonoBehaviour {
             zoomSpeed = Input.GetAxis("Vertical");
         }
 
-        if (zoomSpeed != 0)
-        {
-            foreach (var camera in GetComponentsInChildren<Camera>())
-            {
-                camera.fov = Mathf.Clamp(camera.fov + zoomSpeed, 60, 120);
-            }
-        }
 
         #if UNITY_EDITOR || UNITY_STANDALONE
             Vector3 euler = rotation.eulerAngles;

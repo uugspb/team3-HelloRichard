@@ -10,6 +10,8 @@ public class VRSensor : MonoBehaviour {
 
 	void Start () {
 	
+		Input.gyro.enabled = true;
+		Input.gyro.updateInterval = 0.0001f;
 		#if UNITY_IPHONE && !UNITY_EDITOR
 		Input.gyro.enabled = true;
 		Input.gyro.updateInterval = 0.0001f;

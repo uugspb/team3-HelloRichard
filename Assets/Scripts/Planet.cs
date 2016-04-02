@@ -45,7 +45,6 @@ public class Planet : MonoBehaviour {
 
 	public void Unfocus()
 	{
-		//transform.DOMove (new Vector3 (0, 0, 0), 1);
 		isFocused = false;
 
 
@@ -119,7 +118,16 @@ public class Planet : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-	
+	void Update () 
+	{
+		if (IsFocused && Controller.IsTargeting)
+		{
+			transform.rotation = InputRemoute.InputPacket.Gyroscope.Attitude;
+		}
+	}
+
+	void OnGUI()
+	{
+		GUI.Box (new Rect (0, 0, 200, 50), InputRemoute.InputPacket.Gyroscope.Attitude.ToString());
 	}
 }

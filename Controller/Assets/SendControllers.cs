@@ -31,6 +31,7 @@ public class SendControllers : MonoBehaviour
     // start from unity3d
     public void Start()
     {
+        Input.gyro.enabled = true;
         IP = PlayerPrefs.GetString("IP", "172.31.3.115");
         init();
     }

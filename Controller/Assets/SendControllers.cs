@@ -31,7 +31,7 @@ public class SendControllers : MonoBehaviour
     // start from unity3d
     public void Start()
     {
-        IP = PlayerPrefs.GetString("IP", "127.0.0.1");
+        IP = PlayerPrefs.GetString("IP", "172.31.3.115");
         init();
     }
 

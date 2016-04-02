@@ -15,7 +15,7 @@ public class InputRemoute : InputBase
 
     // public
     // public string IP = "127.0.0.1"; default local
-    public int port; // define > init
+    private int port = 8051; // define > init
 
 
     // start from unity3d
@@ -33,8 +33,7 @@ public class InputRemoute : InputBase
     private void init()
     {
 
-        // define port
-        port = 8051;
+       
 
 
         // ----------------------------
@@ -54,7 +53,7 @@ public class InputRemoute : InputBase
     {
         IPEndPoint anyIP = new IPEndPoint(IPAddress.Any, 0);
         IPEndPoint server = new IPEndPoint(IPAddress.Parse("127.0.0.1"), port);
-        client = new UdpClient(server);
+        client = new UdpClient(port);
         while (true)
         {
 

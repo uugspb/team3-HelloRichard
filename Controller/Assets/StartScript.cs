@@ -11,9 +11,12 @@ public class StartScript : MonoBehaviour
 
     public void OnGo()
     {
-        PlayerPrefs.SetString("IP",InputField.text);        
+        if (string.IsNullOrEmpty(InputField.text))
+            PlayerPrefs.SetString("IP", "172.31.3.115");
+        else
+            PlayerPrefs.SetString("IP",InputField.text);        
         PlayerPrefs.Save();
-
+        
         SceneManager.LoadScene("Controller");
     }
 }

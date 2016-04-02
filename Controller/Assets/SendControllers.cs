@@ -53,15 +53,7 @@ public class SendControllers : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButton(0))
-        {
-            InputP.Touches.Touches.Add(new TouchRemoute()
-            {
-                TouchId = 250,
-                Position = Input.mousePosition
-            });
-        }
-
+        
         if (Input.gyro.enabled)
         {
             InputP.Gyroscope.Aceleration = Input.gyro.userAcceleration;

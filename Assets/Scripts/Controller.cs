@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using DG.Tweening;
 
 public class Controller : MonoBehaviour 
 {
@@ -34,6 +35,14 @@ public class Controller : MonoBehaviour
 				if (!planet.IsFocused)
 				{
 					planet.Focus ();
+
+
+
+					foreach (var camera in GetComponentsInChildren<Camera>())
+					{
+						camera.DOKill ();
+						camera.DOFieldOfView (65, 0.5f);
+					}
 				}
 			}
 		} 
@@ -41,6 +50,12 @@ public class Controller : MonoBehaviour
 		{
 			if (focusedPlanet != null)
 			{
+				foreach (var camera in GetComponentsInChildren<Camera>())
+				{
+					camera.DOKill ();
+					camera.DOFieldOfView (90, 0.5f);
+				}
+
 				focusedPlanet.Unfocus ();
 				focusedPlanet = null;
 			}

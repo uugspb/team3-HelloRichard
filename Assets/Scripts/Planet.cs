@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using DG.Tweening;
+
 
 public class Planet : MonoBehaviour {
 
@@ -43,6 +45,7 @@ public class Planet : MonoBehaviour {
 
 	public void Unfocus()
 	{
+		//transform.DOMove (new Vector3 (0, 0, 0), 1);
 		isFocused = false;
 
 

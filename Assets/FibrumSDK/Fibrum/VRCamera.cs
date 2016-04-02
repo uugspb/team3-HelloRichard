@@ -296,10 +296,23 @@ public class VRCamera : MonoBehaviour {
 	}
 	
 	void LateUpdate () {
-		
-		
-		#if UNITY_EDITOR || UNITY_STANDALONE
-		Vector3 euler = rotation.eulerAngles;
+
+        float zoomSpeed = FibrumInput.FibAxis(FibrumInput.FibJoystick.Vertical) * Time.deltaTime * 10;
+        if (Input.GetAxis("Vertical") != 0)
+        {
+            zoomSpeed = Input.GetAxis("Vertical");
+        }
+
+        if (zoomSpeed != 0)
+        {
+            foreach (var camera in GetComponentsInChildren<Camera>())
+            {
+                camera.fov = Mathf.Clamp(camera.fov + zoomSpeed, 60, 120);
+            }
+        }
+
+        #if UNITY_EDITOR || UNITY_STANDALONE
+            Vector3 euler = rotation.eulerAngles;
         //rotation = Quaternion.Euler(Mathf.Max (-89f,Mathf.Min (89f,Mathf.DeltaAngle(0,euler.x)+mouseSensitivity*(oldMousePosition.y-Input.mousePosition.y))),euler.y-mouseSensitivity*(oldMousePosition.x-Input.mousePosition.x),0f);
         rotation = Quaternion.Euler(Mathf.Max(-89f, Mathf.Min(89f, Mathf.DeltaAngle(0, euler.x) - mouseSensitivity * Input.GetAxis("Mouse Y"))), euler.y + mouseSensitivity * Input.GetAxis("Mouse X"), 0f);
         vrCameraLocal.localRotation = rotation;
@@ -319,6 +332,10 @@ public class VRCamera : MonoBehaviour {
 		
 			TransformFromMatrix (matrix, vrCameraLocal);
 			float deltaRotation = vrCameraLocal.localRotation.eulerAngles.y-oldRotationY;
+
+            if (FibrumInput.FibButton(FibrumInput.FibJoystick.ButDown))
+                deltaRotation = 0;
+
 			while( deltaRotation>180f ) deltaRotation -= 360f;
 			while( deltaRotation<-180f ) deltaRotation += 360f;
 			gyroYaccel = Mathf.Lerp(gyroYaccel,(deltaRotation-oldDeltaRotation)/Time.deltaTime,Time.deltaTime);

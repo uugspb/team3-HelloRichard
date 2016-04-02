@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using DG.Tweening;
+using System.Collections.Generic;
 
 public class Controller : MonoBehaviour 
 {
@@ -41,13 +42,43 @@ public class Controller : MonoBehaviour
 
 	}
 
+	bool rightPressed = false, leftPressed = false;
+
 	void Targeting()
 	{
-		if (Input.touches.Length > 0)
+		bool left = false, right = false;
+
+		if (InputRemoute.InputPacket.Touches.CountTouches > 0)
 		{
-			if (Input.GetTouch (0).phase == TouchPhase.Ended)
+			foreach (TouchRemoute touch in InputRemoute.InputPacket.Touches.Touches)
 			{
-				if (targeting)
+				if (touch.Position.x > Screen.width / 2)
+				{
+					right = true;
+				} 
+				else if (touch.Position.x <= Screen.width / 2)
+				{
+					left = true;
+				}
+			}
+		}
+
+
+		if (right)
+		{
+			if (!rightPressed)
+			{
+				if (!targeting)
+				{
+					targeting = true;
+
+					foreach (var camera in GetComponentsInChildren<Camera>())
+					{
+						camera.DOKill ();
+						camera.DOFieldOfView (65, 0.5f);
+					}
+				} 
+				else
 				{
 					targeting = false;
 
@@ -57,25 +88,18 @@ public class Controller : MonoBehaviour
 						camera.DOKill ();
 						camera.DOFieldOfView (90, 0.5f);
 					}
-				} else
-				{
-					targeting = true;
-
-					foreach (var camera in GetComponentsInChildren<Camera>())
-					{
-						camera.DOKill ();
-						camera.DOFieldOfView (65, 0.5f);
-					}
-
 				}
-
-				isCameraLocked = false;
-
-			} else if (Input.GetTouch (0).phase == TouchPhase.Ended)
-			{
-				isCameraLocked = true;
 			}
+
+
+			rightPressed = true;
+		} 
+		else
+		{
+
+			rightPressed = false;
 		}
+
 	}
 
 	void Focus()

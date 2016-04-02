@@ -44,17 +44,23 @@ public class Planet : MonoBehaviour {
 		}
 	}
 
-	// Update is called once per frame
+	Vector3 initialSubEuler = Vector3.zero;
+	Vector3 initialEuler = Vector3.zero;
+
 	void Update () 
 	{
 		if (IsFocused && Controller.IsTargeting)
 		{
-			transform.rotation = InputRemoute.InputPacket.Gyroscope.Attitude;
+			if (initialSubEuler == Vector3.zero)
+			{
+				initialSubEuler = InputRemoute.InputPacket.Gyroscope.Attitude.eulerAngles;
+				initialEuler = transform.eulerAngles;
+			}
+
+			transform.eulerAngles = initialEuler + InputRemoute.InputPacket.Gyroscope.Attitude.eulerAngles - initialSubEuler;
 		}
+		else if(initialSubEuler != Vector3.zero)
+			initialSubEuler = Vector3.zero;
 	}
 
-	void OnGUI()
-	{
-		GUI.Box (new Rect (0, 0, 200, 50), InputRemoute.InputPacket.Gyroscope.Attitude.ToString());
-	}
 }

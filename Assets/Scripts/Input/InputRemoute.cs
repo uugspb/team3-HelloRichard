@@ -48,6 +48,8 @@ public class InputRemoute : InputBase
 
     }
 
+    string debugText = "234";
+
     // receive thread
     private void ReceiveData()
     {
@@ -66,6 +68,7 @@ public class InputRemoute : InputBase
                 {
                     // Bytes mit der UTF8-Kodierung in das Textformat kodieren.
                     string text = Encoding.UTF8.GetString(data);
+                    debugText = text;
                     InputPacket = JsonUtility.FromJson<InputPacket>(text);
                     // Den abgerufenen Text anzeigen.
                     //print(">> " + text);
@@ -83,6 +86,11 @@ public class InputRemoute : InputBase
                 print(err.ToString());
             }
         }
+    }
+
+    void OnGUI()
+    {
+        GUILayout.Label(debugText);
     }
 
     // getLatestUDPPacket

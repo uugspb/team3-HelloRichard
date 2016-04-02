@@ -304,12 +304,14 @@ public class VRCamera : MonoBehaviour {
         }
 
 
+
         #if UNITY_EDITOR || UNITY_STANDALONE
             Vector3 euler = rotation.eulerAngles;
         //rotation = Quaternion.Euler(Mathf.Max (-89f,Mathf.Min (89f,Mathf.DeltaAngle(0,euler.x)+mouseSensitivity*(oldMousePosition.y-Input.mousePosition.y))),euler.y-mouseSensitivity*(oldMousePosition.x-Input.mousePosition.x),0f);
         rotation = Quaternion.Euler(Mathf.Max(-89f, Mathf.Min(89f, Mathf.DeltaAngle(0, euler.x) - mouseSensitivity * Input.GetAxis("Mouse Y"))), euler.y + mouseSensitivity * Input.GetAxis("Mouse X"), 0f);
         vrCameraLocal.localRotation = rotation;
 		oldMousePosition = Input.mousePosition;
+
 
 #elif UNITY_ANDROID && !UNITY_EDITOR
 		if( !noGyroscope )
@@ -372,8 +374,18 @@ public class VRCamera : MonoBehaviour {
 			vrCameraLocal.localRotation = rotation;
 		}
 #elif UNITY_IPHONE
+
 		rot = ConvertRotation(Input.gyro.attitude);
-		vrCameraLocal.localRotation = Quaternion.Euler(90f,0f,0f)*rot;
+		var origRot = vrCameraLocal.localRotation;
+		rot = Quaternion.Euler(90f,0f,0f)*rot;
+		if(Controller.IsCameraLocked)
+		{
+			rot = Quaternion.Euler (rot.eulerAngles.x, origRot.eulerAngles.y, rot.eulerAngles.z);
+		}
+			
+
+	vrCameraLocal.localRotation = rot;//Quaternion.Euler(90f,0f,0f)*rot;
+
 #elif UNITY_WP8 || UNITY_WP_8_1
 		//rot = ConvertRotation(Input.gyro.attitude);
 		//vrCameraLocal.localRotation = rot;
@@ -390,7 +402,6 @@ public class VRCamera : MonoBehaviour {
         vrCameraLocal.localRotation = rotation;
 		//vrCameraLocal.localRotation = Quaternion.Euler(-fi,0f,teta);
 #endif
-
 
         meanAcceleration = Vector3.Lerp(meanAcceleration,Input.acceleration,Time.deltaTime*2.0f);
 		if( meanAcceleration.x>0.25f && Mathf.Abs (meanAcceleration.y)<0.1f && (meanAcceleration-Input.acceleration).magnitude<0.5f )

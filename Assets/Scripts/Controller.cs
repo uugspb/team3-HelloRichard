@@ -4,8 +4,26 @@ using DG.Tweening;
 
 public class Controller : MonoBehaviour 
 {
+	static bool isCameraLocked = false;
+
+	static public bool IsCameraLocked
+	{
+		get
+		{
+			return isCameraLocked;
+		}
+	}
 
 	Planet focusedPlanet;
+	static bool targeting = false;
+
+	public static bool IsTargeting
+	{
+		get
+		{
+			return targeting;
+		}
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -15,9 +33,49 @@ public class Controller : MonoBehaviour
 
 	void Update () 
 	{
-		Focus ();
+		if(!targeting)
+			Focus ();
+
+		if(focusedPlanet != null)
+			Targeting ();
+
+	}
+
+	void Targeting()
+	{
+		if (Input.touches.Length > 0)
+		{
+			if (Input.GetTouch (0).phase == TouchPhase.Ended)
+			{
+				if (targeting)
+				{
+					targeting = false;
 
 
+					foreach (var camera in GetComponentsInChildren<Camera>())
+					{
+						camera.DOKill ();
+						camera.DOFieldOfView (90, 0.5f);
+					}
+				} else
+				{
+					targeting = true;
+
+					foreach (var camera in GetComponentsInChildren<Camera>())
+					{
+						camera.DOKill ();
+						camera.DOFieldOfView (65, 0.5f);
+					}
+
+				}
+
+				isCameraLocked = false;
+
+			} else if (Input.GetTouch (0).phase == TouchPhase.Ended)
+			{
+				isCameraLocked = true;
+			}
+		}
 	}
 
 	void Focus()
@@ -38,11 +96,7 @@ public class Controller : MonoBehaviour
 
 
 
-					foreach (var camera in GetComponentsInChildren<Camera>())
-					{
-						camera.DOKill ();
-						camera.DOFieldOfView (65, 0.5f);
-					}
+
 				}
 			}
 		} 
@@ -50,11 +104,7 @@ public class Controller : MonoBehaviour
 		{
 			if (focusedPlanet != null)
 			{
-				foreach (var camera in GetComponentsInChildren<Camera>())
-				{
-					camera.DOKill ();
-					camera.DOFieldOfView (90, 0.5f);
-				}
+				
 
 				focusedPlanet.Unfocus ();
 				focusedPlanet = null;

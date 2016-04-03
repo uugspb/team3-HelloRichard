@@ -9,8 +9,20 @@ public class Controller : MonoBehaviour
 
 	static public event SwipeDelegate LeftSwipeEvent;
 	static public event SwipeDelegate RightSwipeEvent;
+	static public event SwipeDelegate TapEvent;
 
 	static bool isCameraLocked = false;
+	static bool rotateSunMode = false;
+
+	public Transform sun;
+
+	static public bool EnableSunRotation
+	{
+		set
+		{
+			rotateSunMode = value;
+		}
+	}
 
 	static public bool IsCameraLocked
 	{
@@ -48,6 +60,12 @@ public class Controller : MonoBehaviour
 		if (LeftSwipeEvent != null)
 			LeftSwipeEvent ();
 
+	}
+
+	void OnTap()
+	{
+		if (TapEvent != null)
+			TapEvent ();
 	}
 
 //	string msg = "none";
@@ -93,6 +111,9 @@ public class Controller : MonoBehaviour
 					else
 					{
 						endTouch = touch.Position;
+
+						if(rotateSunMode)
+							sun.eulerAngles += Vector3.up * (endTouch.x - beginTouch.x) / 20f;
 					}
 				} 
 				else if (touch.Position.x <= Screen.width / 2)
@@ -154,6 +175,7 @@ public class Controller : MonoBehaviour
 			} else
 			{
 				leftPressed = false;
+				OnTap ();
 			}
 		}
 

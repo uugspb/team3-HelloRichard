@@ -50,46 +50,53 @@ public class Planet : MonoBehaviour
     }
 
     static string GetCoordinate(int index)
-    {
-        switch (index)
-        {
-            case 0:
-                return "x"; break;
-            case 1:
-                return "y"; break;
-            case 2:
-                return "z"; break;
-            default:
-                return "w"; break;
-        }
-    }
+	{
+		switch(index)
+		{
+		case 0:
+			return "x"; break;
+		case 1:
+			return "y"; break;
+		case 2:
+			return "z"; break;
+		default:
+			return "w"; break;
+		}
+	}
 
-    Vector3 initialSubEuler = Vector3.zero;
-    Vector3 initialEuler = Vector3.zero;
+	Quaternion initialSubEuler = Vector3.zero;
+	Vector3 initialEuler = Vector3.zero;
 
-    void Update()
-    {
-        if (IsFocused && Controller.IsTargeting)
-        {
-            if (initialSubEuler == Vector3.zero)
-            {
-                initialSubEuler = InputRemoute.InputPacket.Gyroscope.Attitude.eulerAngles;
-                initialEuler = transform.eulerAngles;
-            }
+	void Update () 
+	{
 
-            transform.eulerAngles = initialEuler + InputRemoute.InputPacket.Gyroscope.Attitude.eulerAngles - initialSubEuler;
-        }
-        else if (initialSubEuler != Vector3.zero)
-            initialSubEuler = Vector3.zero;
-    }
+		if (IsFocused && Controller.IsTargeting)
+		{
+			if (initialSubEuler == Quaternion.identity)
+			{
+				initialSubEuler = InputRemoute.InputPacket.Gyroscope.Attitude;
+				initialEuler = transform.eulerAngles;
+			}
 
-    public void OnEnable()
-    {
+			transform.eulerAngles = InputRemoute.InputPacket.Gyroscope.Attitude * Quaternion.Inverse(initialSubEuler);
+		}
+		else if(initialSubEuler != Quaternion.identity)
+			initialSubEuler = Quaternion.identity;
+	}
 
-    }
-
-    public void OnDisable()
-    {
-
-    }
 }
+
+/*
+ * if (IsFocused && Controller.IsTargeting)
+		{
+			if (initialSubEuler == Vector3.zero)
+			{
+				initialSubEuler = InputRemoute.InputPacket.Gyroscope.Attitude.eulerAngles;
+				initialEuler = transform.eulerAngles;
+			}
+
+			transform.eulerAngles = initialEuler + InputRemoute.InputPacket.Gyroscope.Attitude.eulerAngles - initialSubEuler;
+		}
+		else if(initialSubEuler != Vector3.zero)
+			initialSubEuler = Vector3.zero;
+			*/

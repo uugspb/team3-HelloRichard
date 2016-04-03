@@ -5,6 +5,11 @@ using System.Collections.Generic;
 
 public class Controller : MonoBehaviour 
 {
+	public delegate void SwipeDelegate();
+
+	static public event SwipeDelegate LeftSwipeEvent;
+	static public event SwipeDelegate RightSwipeEvent;
+
 	static bool isCameraLocked = false;
 
 	static public bool IsCameraLocked
@@ -30,6 +35,27 @@ public class Controller : MonoBehaviour
 	void Start () {
 	
 	}
+
+	void OnRightSwipe()
+	{
+		if (RightSwipeEvent != null)
+			RightSwipeEvent ();
+
+	}
+
+	void OnLeftSwipe()
+	{
+		if (LeftSwipeEvent != null)
+			LeftSwipeEvent ();
+
+	}
+
+//	string msg = "none";
+//
+//	void OnGUI()
+//	{
+//		GUILayout.Box (msg);
+//	}
 	
 
 	void Update () 
@@ -43,6 +69,11 @@ public class Controller : MonoBehaviour
 
 	bool rightPressed = false, leftPressed = false;
 
+	Vector2 beginTouch = Vector2.zero;
+	Vector2 endTouch = Vector2.zero;
+
+	int minPixelCountForSwipe = 5;
+
 	void Targeting()
 	{
 		bool left = false, right = false;
@@ -54,6 +85,15 @@ public class Controller : MonoBehaviour
 				if (touch.Position.x > Screen.width / 2)
 				{
 					right = true;
+
+					if (!isCameraLocked)
+					{
+						beginTouch = touch.Position;
+					} 
+					else
+					{
+						endTouch = touch.Position;
+					}
 				} 
 				else if (touch.Position.x <= Screen.width / 2)
 				{
@@ -66,16 +106,20 @@ public class Controller : MonoBehaviour
 		{
 			if (!isCameraLocked)
 			{
-				//leftPressed = true;
 				isCameraLocked = true;
+
 			}
 		} 
 		else
 		{
 			if (isCameraLocked)
 			{
-				//leftPressed = false;
 				isCameraLocked = false;
+
+				if (endTouch.x > beginTouch.x && endTouch.x - beginTouch.x > minPixelCountForSwipe)
+					OnRightSwipe ();
+				else if (endTouch.x < beginTouch.x && beginTouch.x - endTouch.x > minPixelCountForSwipe)
+					OnLeftSwipe ();
 			}
 		}
 

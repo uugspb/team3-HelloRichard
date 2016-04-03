@@ -40,11 +40,24 @@ public class UIController : MonoBehaviour
         GameObject current = EventSystem.current.currentSelectedGameObject;
         if (current != null)
         {
-            Selectable left = current.GetComponent<Selectable>().FindSelectableOnLeft();
+            Selectable left = current.GetComponent<Selectable>().FindSelectableOnRight();
             if (left != null)
             {
                 EventSystem.current.SetSelectedGameObject(left.gameObject);
             }
+        }
+    }
+
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            SelectLeft();
+        }
+
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            SelectRight();
         }
     }
 

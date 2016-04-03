@@ -383,7 +383,7 @@ public class VRCamera : MonoBehaviour {
 
 	if(Controller.IsCameraLocked)
 	{
-		vrCameraLocal.eulerAngles = new Vector3(vrCameraLocal.eulerAngles.x, oldY = y, vrCameraLocal.eulerAngles.z);
+		vrCameraLocal.eulerAngles = new Vector3(vrCameraLocal.eulerAngles.x, y, vrCameraLocal.eulerAngles.z);
 	}
 
 

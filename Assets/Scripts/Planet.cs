@@ -52,12 +52,30 @@ public class Planet : MonoBehaviour {
 		}
 	}
 
-	Vector3 initialSubEuler = Vector3.zero;
+	Quaternion initialSubEuler = Vector3.zero;
 	Vector3 initialEuler = Vector3.zero;
 
 	void Update () 
 	{
+
 		if (IsFocused && Controller.IsTargeting)
+		{
+			if (initialSubEuler == Quaternion.identity)
+			{
+				initialSubEuler = InputRemoute.InputPacket.Gyroscope.Attitude;
+				initialEuler = transform.eulerAngles;
+			}
+
+			transform.eulerAngles = InputRemoute.InputPacket.Gyroscope.Attitude * Quaternion.Inverse(initialSubEuler);
+		}
+		else if(initialSubEuler != Quaternion.identity)
+			initialSubEuler = Quaternion.identity;
+	}
+
+}
+
+/*
+ * if (IsFocused && Controller.IsTargeting)
 		{
 			if (initialSubEuler == Vector3.zero)
 			{
@@ -69,6 +87,4 @@ public class Planet : MonoBehaviour {
 		}
 		else if(initialSubEuler != Vector3.zero)
 			initialSubEuler = Vector3.zero;
-	}
-
-}
+			*/

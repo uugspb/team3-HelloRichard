@@ -62,7 +62,7 @@ public class Controller : MonoBehaviour
 			}
 		}
 
-		if (left)
+		if (right)
 		{
 			if (!isCameraLocked)
 			{
@@ -81,9 +81,9 @@ public class Controller : MonoBehaviour
 
 		if (focusedPlanet != null)
 		{
-			if (right)
+			if (left)
 			{
-				if (!rightPressed)
+				if (!leftPressed)
 				{
 					if (!targeting)
 					{
@@ -106,10 +106,10 @@ public class Controller : MonoBehaviour
 						}
 					}
 				}
-				rightPressed = true;
+				leftPressed = true;
 			} else
 			{
-				rightPressed = false;
+				leftPressed = false;
 			}
 		}
 

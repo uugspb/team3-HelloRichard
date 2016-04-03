@@ -7,6 +7,8 @@ public class Planet : MonoBehaviour {
 
 	bool isFocused = false;
 
+	public CanvasGroup canvas;
+
 	public bool IsFocused
 	{
 		get
@@ -20,6 +22,9 @@ public class Planet : MonoBehaviour {
 		isFocused = true;
         transform.DOKill();
         transform.DOScale(1.1f * Vector3.one, 0.5f);
+
+		canvas.DOKill ();
+		canvas.DOFade (1f, 0.5f);
     }
 
 	public void Unfocus()
@@ -27,6 +32,9 @@ public class Planet : MonoBehaviour {
 		isFocused = false;
         transform.DOKill();
         transform.DOScale(1.0f * Vector3.one, 0.5f);
+
+		canvas.DOKill ();
+		canvas.DOFade (0f, 0.5f);
     }
 
     static string GetCoordinate(int index)

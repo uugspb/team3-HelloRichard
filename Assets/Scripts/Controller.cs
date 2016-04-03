@@ -49,6 +49,7 @@ public class Controller : MonoBehaviour
 		if (RightSwipeEvent != null)
 			RightSwipeEvent ();
 
+		msg = "Right";
 	}
 
 	void OnLeftSwipe()
@@ -56,20 +57,23 @@ public class Controller : MonoBehaviour
 		if (LeftSwipeEvent != null)
 			LeftSwipeEvent ();
 
+		msg = "Left";
 	}
 
 	void OnTap()
 	{
 		if (TapEvent != null)
 			TapEvent ();
+
+
 	}
 
-//	string msg = "none";
-//
-//	void OnGUI()
-//	{
-//		GUILayout.Box (msg);
-//	}
+	string msg = "none";
+
+	void OnGUI()
+	{
+		GUILayout.Box (msg);
+	}
 	
 
 	void Update () 

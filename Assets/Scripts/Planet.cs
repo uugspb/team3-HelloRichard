@@ -72,16 +72,29 @@ public class Planet : MonoBehaviour
 
 		if (IsFocused && Controller.targeting)
 		{
-			if (initialSubEuler == Quaternion.identity)
+			if (initialSubEuler == Vector3.zero)
 			{
-				initialSubEuler = InputRemoute.InputPacket.Gyroscope.Attitude;
+				initialSubEuler = InputRemoute.InputPacket.Gyroscope.Attitude.eulerAngles;
 				initialEuler = transform.eulerAngles;
 			}
 
-			transform.localRotation = Quaternion.Inverse(InputRemoute.InputPacket.Gyroscope.Attitude) * initialSubEuler;
+			transform.eulerAngles = initialEuler + InputRemoute.InputPacket.Gyroscope.Attitude.eulerAngles - initialSubEuler;
 		}
-		else if(initialSubEuler != Quaternion.identity)
-			initialSubEuler = Quaternion.identity;
+		else if(initialSubEuler != Vector3.zero)
+			initialSubEuler = Vector3.zero;
+
+//		if (IsFocused && Controller.targeting)
+//		{
+//			if (initialSubEuler == Quaternion.identity)
+//			{
+//				initialSubEuler = InputRemoute.InputPacket.Gyroscope.Attitude;
+//				initialEuler = transform.eulerAngles;
+//			}
+//
+//			transform.localRotation = Quaternion.Inverse(InputRemoute.InputPacket.Gyroscope.Attitude) * initialSubEuler;
+//		}
+//		else if(initialSubEuler != Quaternion.identity)
+//			initialSubEuler = Quaternion.identity;
 	}
 
 }

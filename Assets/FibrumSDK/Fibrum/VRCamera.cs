@@ -375,16 +375,17 @@ public class VRCamera : MonoBehaviour {
 		}
 #elif UNITY_IPHONE
 
-		rot = ConvertRotation(Input.gyro.attitude);
-		var origRot = vrCameraLocal.localRotation;
-		rot = Quaternion.Euler(90f,0f,0f)*rot;
-		if(Controller.IsCameraLocked)
-		{
-			rot = Quaternion.Euler (rot.eulerAngles.x, origRot.eulerAngles.y, rot.eulerAngles.z);
-		}
-			
+	rot = ConvertRotation(Input.gyro.attitude);
 
-	vrCameraLocal.localRotation = rot;//Quaternion.Euler(90f,0f,0f)*rot;
+	float y = vrCameraLocal.eulerAngles.y;
+
+	vrCameraLocal.localRotation = Quaternion.Euler(90f,0f,0f)*rot;
+
+	if(Controller.IsCameraLocked)
+	{
+		vrCameraLocal.eulerAngles = new Vector3(vrCameraLocal.eulerAngles.x, oldY = y, vrCameraLocal.eulerAngles.z);
+	}
+
 
 #elif UNITY_WP8 || UNITY_WP_8_1
 		//rot = ConvertRotation(Input.gyro.attitude);

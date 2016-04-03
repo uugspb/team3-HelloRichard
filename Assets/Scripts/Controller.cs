@@ -37,8 +37,7 @@ public class Controller : MonoBehaviour
 		if(!targeting)
 			Focus ();
 
-		if(focusedPlanet != null)
-			Targeting ();
+		Targeting ();
 
 	}
 
@@ -63,42 +62,57 @@ public class Controller : MonoBehaviour
 			}
 		}
 
-
-		if (right)
+		if (left)
 		{
-			if (!rightPressed)
+			if (!isCameraLocked)
 			{
-				if (!targeting)
-				{
-					targeting = true;
-
-					foreach (var camera in GetComponentsInChildren<Camera>())
-					{
-						camera.DOKill ();
-						camera.DOFieldOfView (65, 0.5f);
-					}
-				} 
-				else
-				{
-					targeting = false;
-
-
-					foreach (var camera in GetComponentsInChildren<Camera>())
-					{
-						camera.DOKill ();
-						camera.DOFieldOfView (90, 0.5f);
-					}
-				}
+				//leftPressed = true;
+				isCameraLocked = true;
 			}
-
-
-			rightPressed = true;
 		} 
 		else
 		{
-
-			rightPressed = false;
+			if (isCameraLocked)
+			{
+				//leftPressed = false;
+				isCameraLocked = false;
+			}
 		}
+
+		if (focusedPlanet != null)
+		{
+			if (right)
+			{
+				if (!rightPressed)
+				{
+					if (!targeting)
+					{
+						targeting = true;
+
+						foreach (var camera in GetComponentsInChildren<Camera>())
+						{
+							camera.DOKill ();
+							camera.DOFieldOfView (65, 0.5f);
+						}
+					} else
+					{
+						targeting = false;
+
+
+						foreach (var camera in GetComponentsInChildren<Camera>())
+						{
+							camera.DOKill ();
+							camera.DOFieldOfView (90, 0.5f);
+						}
+					}
+				}
+				rightPressed = true;
+			} else
+			{
+				rightPressed = false;
+			}
+		}
+
 
 	}
 
@@ -117,9 +131,6 @@ public class Controller : MonoBehaviour
 				if (!planet.IsFocused)
 				{
 					planet.Focus ();
-
-
-
 
 				}
 			}

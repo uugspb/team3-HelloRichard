@@ -87,12 +87,7 @@ public class InputRemoute : InputBase
             }
         }
     }
-
-	void OnGUI()
-	{
-		GUI.Box (new Rect (0, 100, 200, 50), debugText);
-	}
-
+		
     // getLatestUDPPacket
     // cleans up the rest
 

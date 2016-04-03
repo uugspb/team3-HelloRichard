@@ -383,7 +383,18 @@ public class VRCamera : MonoBehaviour {
 
 	if(Controller.IsCameraLocked)
 	{
-		vrCameraLocal.eulerAngles = new Vector3(vrCameraLocal.eulerAngles.x, y, vrCameraLocal.eulerAngles.z);
+	free = false;
+		vrCameraLocal.eulerAngles = new Vector3(vrCameraLocal.eulerAngles.x, angle = y, vrCameraLocal.eulerAngles.z);
+	}
+	else
+	{
+		if(!free)
+		{
+		free = true;
+		angle = vrCameraLocal.eulerAngles.y - angle;
+		}
+
+		vrCameraLocal.eulerAngles = new Vector3(vrCameraLocal.eulerAngles.x, vrCameraLocal.eulerAngles.y - angle, vrCameraLocal.eulerAngles.z);
 	}
 
 
@@ -433,6 +444,9 @@ public class VRCamera : MonoBehaviour {
 			blackScreen = Mathf.Lerp(blackScreen,needBlackScreen,Time.deltaTime*5f);
 		} */
 	}
+
+	float angle = 0;
+	bool free = true;
 	
 	void OnGUI()
 	{

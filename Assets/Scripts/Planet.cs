@@ -64,13 +64,13 @@ public class Planet : MonoBehaviour
 		}
 	}
 
-	Quaternion initialSubEuler = Vector3.zero;
+	Quaternion initialSubEuler = Quaternion.identity;
 	Vector3 initialEuler = Vector3.zero;
 
 	void Update () 
 	{
 
-		if (IsFocused && Controller.IsTargeting)
+		if (IsFocused && Controller.targeting)
 		{
 			if (initialSubEuler == Quaternion.identity)
 			{
@@ -78,7 +78,7 @@ public class Planet : MonoBehaviour
 				initialEuler = transform.eulerAngles;
 			}
 
-			transform.eulerAngles = InputRemoute.InputPacket.Gyroscope.Attitude * Quaternion.Inverse(initialSubEuler);
+			transform.localRotation = Quaternion.Inverse(InputRemoute.InputPacket.Gyroscope.Attitude) * initialSubEuler;
 		}
 		else if(initialSubEuler != Quaternion.identity)
 			initialSubEuler = Quaternion.identity;

@@ -22,6 +22,10 @@ public class Controller : MonoBehaviour
 		{
 			rotateSunMode = value;
 		}
+        get
+        {
+            return rotateSunMode;
+        }
 	}
 
 	static public bool IsCameraLocked
@@ -33,15 +37,7 @@ public class Controller : MonoBehaviour
 	}
 
 	Planet focusedPlanet;
-	static bool targeting = false;
-
-	public static bool IsTargeting
-	{
-		get
-		{
-			return targeting;
-		}
-	}
+	static public bool targeting = false;
 
 	// Use this for initialization
 	void Start () {
@@ -146,37 +142,48 @@ public class Controller : MonoBehaviour
 
 		if (focusedPlanet != null)
 		{
-			if (left)
-			{
-				if (!leftPressed)
-				{
-					if (!targeting)
-					{
-						targeting = true;
+            if (leftPressed && ! left)
+            {
+                leftPressed = false;
+                OnTap();
+            }
 
-						foreach (var camera in GetComponentsInChildren<Camera>())
-						{
-							camera.DOKill ();
-							camera.DOFieldOfView (65, 0.5f);
-						}
-					} else
-					{
-						targeting = false;
+            if (!leftPressed && left)
+            {
+                // Start tap
+                leftPressed = true;
+            }
+
+   //         if (left)
+			//{
+			//	if (!leftPressed)
+			//	{
+			//		if (!targeting)
+			//		{
+			//			targeting = true;
+
+			//			foreach (var camera in GetComponentsInChildren<Camera>())
+			//			{
+			//				camera.DOKill ();
+			//				camera.DOFieldOfView (65, 0.5f);
+			//			}
+			//		} else
+			//		{
+			//			targeting = false;
 
 
-						foreach (var camera in GetComponentsInChildren<Camera>())
-						{
-							camera.DOKill ();
-							camera.DOFieldOfView (90, 0.5f);
-						}
-					}
-				}
-				leftPressed = true;
-			} else
-			{
-				leftPressed = false;
-				OnTap ();
-			}
+			//			foreach (var camera in GetComponentsInChildren<Camera>())
+			//			{
+			//				camera.DOKill ();
+			//				camera.DOFieldOfView (90, 0.5f);
+			//			}
+			//		}
+			//	}
+			//	leftPressed = true;
+			//} else
+			//{
+
+			//}
 		}
 
 
